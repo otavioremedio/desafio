@@ -8,13 +8,13 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>desafio</name>
+	<name>Desafio</name>
 	<description>Desafio para vaga de desenvolvedor na Bluesoft</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.8.RELEASE</version>
+		<version>1.5.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -58,23 +58,23 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-		      <groupId>com.spotify</groupId>
-		      <artifactId>docker-maven-plugin</artifactId>
-		      <version>0.4.13</version>
-		      <configuration>
-		        <imageName>desafio-bluesoft</imageName>
-		        <baseImage>openjdk</baseImage>
-		        <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
-		        <resources>
-		           <resource>
-		             <targetPath>/</targetPath>
-		             <directory>${project.build.directory}</directory>
-		             <include>${project.build.finalName}.jar</include>
-		           </resource>
-		        </resources>
-		      </configuration>
-		    </plugin>
+<!-- 			<plugin> -->
+<!-- 		      <groupId>com.spotify</groupId> -->
+<!-- 		      <artifactId>docker-maven-plugin</artifactId> -->
+<!-- 		      <version>0.4.13</version> -->
+<!-- 		      <configuration> -->
+<!-- 		        <imageName>desafio-bluesoft</imageName> -->
+<!-- 		        <baseImage>openjdk</baseImage> -->
+<!-- 		        <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint> -->
+<!-- 		        <resources> -->
+<!-- 		           <resource> -->
+<!-- 		             <targetPath>/</targetPath> -->
+<!-- 		             <directory>${project.build.directory}</directory> -->
+<!-- 		             <include>${project.build.finalName}.jar</include> -->
+<!-- 		           </resource> -->
+<!-- 		        </resources> -->
+<!-- 		      </configuration> -->
+<!-- 		    </plugin> -->
 		</plugins>
 	</build>
 </project>
