@@ -26,6 +26,4 @@ public class PedidoController {
 		log.info(cotacao.getBody().toString());
 	}
 	
-	
-	
 }
