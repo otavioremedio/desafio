@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "produto")
@@ -15,7 +16,9 @@ public class Produto {
 
     private String nome;
 
-    public String getGtin() {
+    private long quantidade;
+
+	public String getGtin() {
         return gtin;
     }
 
@@ -30,4 +33,10 @@ public class Produto {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    @Transient
+    public long getQuantidade() {
+		return quantidade;
+	}
+
 }

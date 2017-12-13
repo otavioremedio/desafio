@@ -2,6 +2,7 @@ package br.com.bluesoft.desafio.services.impl;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +30,17 @@ public class PedidoServiceImpl implements PedidoService {
 	@Override
 	public List<Pedido> criarPedidos(List<Produto> produtos) {
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<List<CotacaoDto>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + "7894900011517"
-				                                            , HttpMethod.GET, null, new ParameterizedTypeReference<List<CotacaoDto>>(){});
+		List<CotacaoDto> cotacoes = null;
 
-		List<CotacaoDto> cotacoes = cotacoesResponse.getBody();
+		produtos = produtos.stream().filter(x -> x.getQuantidade() > 0).collect(Collectors.toList());
+
+		for (Produto produto : produtos) {
+			ResponseEntity<List<CotacaoDto>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + produto.getGtin()
+                    , HttpMethod.GET, null, new ParameterizedTypeReference<List<CotacaoDto>>(){});
+
+			cotacoes = cotacoesResponse.getBody();
+		}
+
         for (CotacaoDto cotacao : cotacoes) {
 			PrecoDto menorPreco = cotacao.getPrecos().stream().filter(x -> x.getQuantidade_minima() == 1).findFirst().get();
 			cotacao.getPrecos().clear();
