@@ -21,6 +21,6 @@ public class Preco {
 	}
 	@Override
 	public String toString() {
-		return "Preco [preco=" + preco + ", quantidade_minima=" + quantidade_minima + "]";
+		return "{preco=" + preco + ", quantidade_minima=" + quantidade_minima + "}";
 	}	
 }

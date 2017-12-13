@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Cotacao {
 	private String cnpj;
 	private List<Preco> precos;
-	private String name;
+	private String nome;
 	
 	public String getCnpj() {
 		return cnpj;
@@ -22,15 +22,15 @@ public class Cotacao {
 	public void setPrecos(List<Preco> precos) {
 		this.precos = precos;
 	}
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	@Override
 	public String toString() {
-		return "Cotacao [cnpj=" + cnpj + ", precos=" + precos + ", name=" + name + "]";
+		return "{cnpj=" + cnpj + ", precos=" + precos + ", nome=" + nome + "}";
 	}
 	
 }
