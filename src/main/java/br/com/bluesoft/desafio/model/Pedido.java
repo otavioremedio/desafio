@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Pedido {
 
 	private long id;
-	private List<ProdutoPedido> produtos;
+	private List<Item> itens;
 	private Fornecedor fornecedor;
 
 	@Id
@@ -32,11 +32,11 @@ public class Pedido {
 	}
 
 	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<ProdutoPedido> getProdutos() {
-		return produtos;
+	public List<Item> getItens() {
+		return itens;
 	}
-	public void setProdutos(List<ProdutoPedido> produtos) {
-		this.produtos = produtos;
+	public void setItens(List<Item> itens) {
+		this.itens = itens;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -46,5 +46,11 @@ public class Pedido {
 	public void setFornecedor(Fornecedor fornecedor) {
 		this.fornecedor = fornecedor;
 	}
+	@Override
+	public String toString() {
+		return "{id=" + id + ", itens=" + itens + ", fornecedor=" + fornecedor + "}";
+	}
+	
+	
 
 }

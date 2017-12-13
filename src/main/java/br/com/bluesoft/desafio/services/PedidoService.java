@@ -3,7 +3,7 @@ package br.com.bluesoft.desafio.services;
 import java.util.List;
 
 import br.com.bluesoft.desafio.model.Pedido;
-import br.com.bluesoft.desafio.model.ProdutoPedido;
+import br.com.bluesoft.desafio.model.Item;
 
 public interface PedidoService {
 
@@ -13,6 +13,6 @@ public interface PedidoService {
 	 * @param produtos
 	 * @return Optional<List<Pedido>>
 	 */
-	List<Pedido> criarPedidos(List<ProdutoPedido> produtos);
+	List<Pedido> criarPedidos(List<Item> itens);
 
 }

@@ -25,7 +25,7 @@ import br.com.bluesoft.desafio.dtos.CotacaoDto;
 import br.com.bluesoft.desafio.dtos.PrecoDto;
 import br.com.bluesoft.desafio.model.Fornecedor;
 import br.com.bluesoft.desafio.model.Pedido;
-import br.com.bluesoft.desafio.model.ProdutoPedido;
+import br.com.bluesoft.desafio.model.Item;
 import br.com.bluesoft.desafio.repository.FornecedorRepository;
 import br.com.bluesoft.desafio.repository.PedidoRepository;
 import br.com.bluesoft.desafio.services.PedidoService;
@@ -45,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
 	private FornecedorRepository fornecedorRepository;
 
 	@Override
-	public List<Pedido> criarPedidos(List<ProdutoPedido> produtosPedido) {
+	public List<Pedido> criarPedidos(List<Item> itens) {
 		
 		RestTemplate restTemplate = new RestTemplate();
 		List<CotacaoDto> cotacoes = null;
@@ -53,18 +53,18 @@ public class PedidoServiceImpl implements PedidoService {
 		List<Pedido> pedidosCriados = new ArrayList<Pedido>();
 		
 		try {		
-			produtosPedido = produtosPedido.stream().filter(x -> x.getQuantidade() > 0).collect(Collectors.toList());
+			itens = itens.stream().filter(x -> x.getQuantidade() > 0).collect(Collectors.toList());
 
-			for (ProdutoPedido produtoPedido : produtosPedido) {
+			for (Item item : itens) {
 				//consulta cotacao do produto
-				ResponseEntity<List<CotacaoDto>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + produtoPedido.getGtin()
+				ResponseEntity<List<CotacaoDto>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + item.getGtin()
 	                    , HttpMethod.GET, null, new ParameterizedTypeReference<List<CotacaoDto>>(){});
 
 				cotacoes = cotacoesResponse.getBody();
 
 				//pega o menor preço de cada fornecedor conforme quantidade minima e quantidade solicitada
 				for (CotacaoDto cotacao : cotacoes) {
-					Optional<PrecoDto> menorPreco = cotacao.getPrecos().stream().filter(x -> (produtoPedido.getQuantidade() - x.getQuantidade_minima()) >= 0).findFirst();
+					Optional<PrecoDto> menorPreco = cotacao.getPrecos().stream().filter(x -> (item.getQuantidade() - x.getQuantidade_minima()) >= 0).findFirst();
 					if(menorPreco.isPresent()){
 						cotacao.getPrecos().clear();
 						cotacao.getPrecos().add(menorPreco.get());
@@ -84,8 +84,8 @@ public class PedidoServiceImpl implements PedidoService {
 					cotacoes.sort(cotacaoComparator);
 
 					//posicao 0 para pegar a menor cotacao de todos os fornecedores
-					cotacoes.get(0).setGtin(produtoPedido.getGtin());
-					cotacoes.get(0).setQuantidade(produtoPedido.getQuantidade());
+					cotacoes.get(0).setGtin(item.getGtin());
+					cotacoes.get(0).setQuantidade(item.getQuantidade());
 					melhoresCotacoes.add(cotacoes.get(0));
 				}				
 			}
@@ -96,23 +96,23 @@ public class PedidoServiceImpl implements PedidoService {
 			//prepara os pedidos
 			cotacoesPorCnpj.forEach((k, v) -> {
 				ArrayList<CotacaoDto> lCotacoes = (ArrayList<CotacaoDto>) v;
-				List<ProdutoPedido> produtos = new ArrayList<ProdutoPedido>();
+				List<Item> produtos = new ArrayList<Item>();
 				Pedido pedido = new Pedido();				
 				String cnpj = "";
 				String nmFornecedor = "";
 				Fornecedor fornecedor;
 				
 				for (CotacaoDto cotacaoDto : lCotacoes) {
-					ProdutoPedido produtoPedido = new ProdutoPedido();
-					produtoPedido.setGtin(cotacaoDto.getGtin());
-					produtoPedido.setPreco(cotacaoDto.getPrecos().get(0).getPreco());
-					produtoPedido.setQuantidade(cotacaoDto.getQuantidade());
-					produtos.add(produtoPedido);
+					Item item = new Item();
+					item.setGtin(cotacaoDto.getGtin());
+					item.setPreco(cotacaoDto.getPrecos().get(0).getPreco());
+					item.setQuantidade(cotacaoDto.getQuantidade());
+					produtos.add(item);
 					cnpj = cotacaoDto.getCnpj();
 					nmFornecedor = cotacaoDto.getNome();
 				}
 				
-				pedido.setProdutos(produtos);
+				pedido.setItens(produtos);
 				fornecedor = this.fornecedorRepository.findByCnpj(cnpj);
 				
 				if (fornecedor == null) {

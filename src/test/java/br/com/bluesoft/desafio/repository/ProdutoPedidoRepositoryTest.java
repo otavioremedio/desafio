@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import br.com.bluesoft.desafio.model.Fornecedor;
 import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.model.Produto;
-import br.com.bluesoft.desafio.model.ProdutoPedido;
+import br.com.bluesoft.desafio.model.Item;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -63,11 +63,11 @@ public class ProdutoPedidoRepositoryTest {
 
 	private Pedido obterDadosPedido(Produto produto, Fornecedor fornecedor) {
 		Pedido pedido = new Pedido();
-		ProdutoPedido produtoPedido = new ProdutoPedido();
-		produtoPedido.setGtin(produto.getGtin());
-		produtoPedido.setQuantidade(4);
-		produtoPedido.setPreco(new BigDecimal(3.45));
-		pedido.getProdutos().add(produtoPedido);
+		Item item = new Item();
+		item.setGtin(produto.getGtin());
+		item.setQuantidade(4);
+		item.setPreco(new BigDecimal(3.45));
+		pedido.getItens().add(item);
 		pedido.setFornecedor(fornecedor);
 
 		return pedido;

@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ProdutoPedido {
+public class Item {
 
 	private long id;
 	private long quantidade;
@@ -56,4 +56,11 @@ public class ProdutoPedido {
 	public void setGtin(String gtin) {
 		this.gtin = gtin;
 	}
+	@Override
+	public String toString() {
+		return "{id=" + id + ", quantidade=" + quantidade + ", preco=" + preco + ", pedido=" + pedido + ", gtin="
+				+ gtin + "}";
+	}
+	
+	
 }
