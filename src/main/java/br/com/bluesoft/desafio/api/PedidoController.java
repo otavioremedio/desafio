@@ -1,10 +1,7 @@
 package br.com.bluesoft.desafio.api;
 
-import static org.assertj.core.api.Assertions.filter;
-
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +25,12 @@ import br.com.bluesoft.desafio.model.Produto;
 public class PedidoController {
 	
 	private static final Logger log = LoggerFactory.getLogger(PedidoController.class);
+	private static final ResourceBundle props = ResourceBundle.getBundle("application");
 	
 	@PostMapping
 	public @ResponseBody List<Cotacao> consome(@RequestBody Iterable<Produto> produtos){
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<List<Cotacao>> cotacoesResponse = restTemplate.exchange("https://egf1amcv33.execute-api.us-east-1.amazonaws.com/dev/produto/7894900011517" 
+		ResponseEntity<List<Cotacao>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + "7894900011517" 
 				                                                              , HttpMethod.GET, null, new ParameterizedTypeReference<List<Cotacao>>(){});
         List<Cotacao> cotacoes = cotacoesResponse.getBody();
         for (Cotacao cotacao : cotacoes) {
