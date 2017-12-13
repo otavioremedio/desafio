@@ -10,8 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.engine.profile.Fetch;
 
 @Entity
 @Table(name = "fornecedor")
@@ -22,7 +26,6 @@ public class Fornecedor implements Serializable {
 	private Long id;
 	private String nome;
 	private String cnpj;
-	private List<Pedido> pedidos;
 
 	public Fornecedor() {
 	}
@@ -54,15 +57,6 @@ public class Fornecedor implements Serializable {
 
 	public void setCnpj(String cnpj) {
 		this.cnpj = cnpj;
-	}
-
-	@OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public void setPedidos(List<Pedido> pedidos) {
-		this.pedidos = pedidos;
 	}
 
 	@Override

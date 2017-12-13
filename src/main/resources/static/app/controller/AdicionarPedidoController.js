@@ -18,9 +18,10 @@
 
             function salvarPedido() {
                 var data = vm.produtos.map(function(produto) {
-                    return {
-                        gtin: produto.gtin,
-                        quantidade: produto.quantidade
+                    return {produto:{
+                        		gtin: produto.gtin
+                        	},                      
+                        	quantidade: produto.quantidade
                     };
                 });
 

@@ -1,6 +1,7 @@
 package br.com.bluesoft.desafio.model;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 public class Item {
@@ -17,10 +19,10 @@ public class Item {
 	private long quantidade;
     private BigDecimal preco;
     private Pedido pedido;
-    private String gtin;
+    private Produto produto;
+    private BigDecimal total;
     
-    
-    @Id
+	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="produto_pedido_id")
     public long getId() {
@@ -50,16 +52,25 @@ public class Item {
 		this.pedido = pedido;
 	}
 	
-	public String getGtin() {
-		return gtin;
+	@Transient
+	public Produto getProduto() {
+		return produto;
 	}
-	public void setGtin(String gtin) {
-		this.gtin = gtin;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
+	
+	public BigDecimal getTotal() {
+		return new BigDecimal(this.quantidade * this.preco.doubleValue(), MathContext.DECIMAL64);
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+	
 	@Override
 	public String toString() {
-		return "{id=" + id + ", quantidade=" + quantidade + ", preco=" + preco + ", pedido=" + pedido + ", gtin="
-				+ gtin + "}";
+		return "{id=" + id + ", quantidade=" + quantidade + ", preco=" + preco + ", pedido=" + pedido
+				+ ", produto=" + produto + ", total=" + total + "}";
 	}
 	
 	
