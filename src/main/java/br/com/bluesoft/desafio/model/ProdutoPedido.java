@@ -2,19 +2,37 @@ package br.com.bluesoft.desafio.model;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-public class ProdutoPedido extends Produto {
+@Entity
+public class ProdutoPedido {
 
-	private int quantidade;
+	private long id;
+	private long quantidade;
     private BigDecimal preco;
     private Pedido pedido;
-
-    public int getQuantidade() {
+    private String gtin;
+    
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="produto_pedido_id")
+    public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public long getQuantidade() {
 		return quantidade;
 	}
-	public void setQuantidade(int quantidade) {
+	public void setQuantidade(long quantidade) {
 		this.quantidade = quantidade;
 	}
 	public BigDecimal getPreco() {
@@ -31,6 +49,11 @@ public class ProdutoPedido extends Produto {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-
-
+	
+	public String getGtin() {
+		return gtin;
+	}
+	public void setGtin(String gtin) {
+		this.gtin = gtin;
+	}
 }

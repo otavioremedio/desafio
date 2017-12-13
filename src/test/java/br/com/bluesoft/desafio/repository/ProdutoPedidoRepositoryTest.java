@@ -65,7 +65,6 @@ public class ProdutoPedidoRepositoryTest {
 		Pedido pedido = new Pedido();
 		ProdutoPedido produtoPedido = new ProdutoPedido();
 		produtoPedido.setGtin(produto.getGtin());
-		produtoPedido.setNome(produto.getNome());
 		produtoPedido.setQuantidade(4);
 		produtoPedido.setPreco(new BigDecimal(3.45));
 		pedido.getProdutos().add(produtoPedido);

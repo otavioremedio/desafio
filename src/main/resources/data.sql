@@ -6,8 +6,8 @@ INSERT INTO Produto (gtin, nome) VALUES ('7891000053508', 'ACHOCOLATADO NESCAU 2
 INSERT INTO Produto (gtin, nome) VALUES ('7891000100103', 'LEITE CONDENSADO MOÇA');
 INSERT INTO Produto (gtin, nome) VALUES ('7891991010856', 'CERVEJA BUDWEISER');
 
-CREATE TABLE 'empresa' (
-  'id' bigint(20) NOT NULL,
+/*CREATE TABLE 'fornecedor' (
+  'forncedor_id' bigint(20) NOT NULL,
   'cnpj' varchar(255) NOT NULL,  
   'nome' varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;*/

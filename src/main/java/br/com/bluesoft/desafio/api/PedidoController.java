@@ -26,17 +26,9 @@ public class PedidoController {
 	private PedidoService pedidoService;
 
 	@PostMapping
-	public @ResponseBody List<Pedido> consome(@RequestBody List<ProdutoPedido> produtos){
-
-
-        //Cotacao c = cotacoes.stream().filter(x -> (x.getPrecos().stream().filter(y -> y.getQuantidade_minima() == 1).findFirst().get()).getQuantidade_minima() == 1).findFirst().get();
-
+	public @ResponseBody List<Pedido> criarPedidos(@RequestBody List<ProdutoPedido> produtos){
 		List<Pedido> pedidos = this.pedidoService.criarPedidos(produtos);
 		return pedidos;
-
-        //Comparator<Cotacao> comparaPreco = (Cotacao c1, Cotacao c2) -> (float)(c2.getPrecos() - c1.getPrecos());
-       // cotacoes.sort(c1, c2) -> (float) ();
-
 	}
 
 }

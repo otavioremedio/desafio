@@ -56,7 +56,7 @@ public class Fornecedor implements Serializable {
 		this.cnpj = cnpj;
 	}
 
-	@OneToMany(mappedBy = "fornecedores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
