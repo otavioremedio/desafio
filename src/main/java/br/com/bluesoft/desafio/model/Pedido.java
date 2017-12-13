@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,7 +17,8 @@ import javax.persistence.Table;
 public class Pedido {
 
 	private long id;
-	private List<Item> itens;
+	private List<ProdutoPedido> produtos;
+	private Fornecedor fornecedor;
 
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "pedido_id")
@@ -27,12 +29,20 @@ public class Pedido {
 		this.id = id;
 	}
 
-	@OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<Item> getItens() {
-		return itens;
+	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<ProdutoPedido> getProdutos() {
+		return produtos;
 	}
-	public void setItens(List<Item> itens) {
-		this.itens = itens;
+	public void setProdutos(List<ProdutoPedido> produtos) {
+		this.produtos = produtos;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	public Fornecedor getFornecedor() {
+		return fornecedor;
+	}
+	public void setFornecedor(Fornecedor fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 }

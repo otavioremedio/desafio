@@ -9,7 +9,9 @@ public class CotacaoDto {
 	private String cnpj;
 	private List<PrecoDto> precos;
 	private String nome;
-	
+	private String gtin;
+	private long quantidade;
+
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -28,9 +30,24 @@ public class CotacaoDto {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	public String getGtin() {
+		return gtin;
+	}
+	public void setGtin(String gtin) {
+		this.gtin = gtin;
+	}
+
+	public long getQuantidade() {
+		return quantidade;
+	}
+	public void setQuantidade(long quantidade) {
+		this.quantidade = quantidade;
+	}
+
 	@Override
 	public String toString() {
-		return "{cnpj=" + cnpj + ", precos=" + precos + ", nome=" + nome + "}";
+		return "{cnpj=" + cnpj + ", precos=" + precos + ", nome=" + nome + ", gtin=" + gtin
+				+ ", quantidade=" + quantidade + "}";
 	}
-	
+
 }

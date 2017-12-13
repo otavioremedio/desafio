@@ -2,6 +2,7 @@ package br.com.bluesoft.desafio.repository;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.After;
@@ -14,13 +15,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.bluesoft.desafio.model.Fornecedor;
-import br.com.bluesoft.desafio.model.Item;
+import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.model.Produto;
+import br.com.bluesoft.desafio.model.ProdutoPedido;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class ItemRepositoryTest {
+public class ProdutoPedidoRepositoryTest {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
@@ -29,26 +31,26 @@ public class ItemRepositoryTest {
 	private FornecedorRepository fornecedorRepository;
 
 	@Autowired
-	private ItemRepository itemRepository;
+	private PedidoRepository pedidoRepository;
 
 	@Before
 	public void setUp() throws Exception {
 		Fornecedor fornecedor = this.fornecedorRepository.save(obterDadosFornecedor());
 		Produto produto = this.produtoRepository.findByGtin("7894900011517");
-		this.itemRepository.save(obterDadosItem(produto, fornecedor));
+		this.pedidoRepository.save(obterDadosPedido(produto, fornecedor));
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		this.fornecedorRepository.deleteAll();
 		this.produtoRepository.deleteAll();
-		this.itemRepository.deleteAll();
+		this.pedidoRepository.deleteAll();
 	}
 
 	@Test
-	public void testBuscarItens() {
-		List<Item> itens = this.itemRepository.findAll();
-		assertEquals(1, itens.size());
+	public void testListarPedido() {
+		List<Pedido> pedidos = this.pedidoRepository.findAll();
+		assertEquals(1, pedidos.size());
 	}
 //
 //	@Test
@@ -59,14 +61,17 @@ public class ItemRepositoryTest {
 //		assertEquals(2, lancamentos.getTotalElements());
 //	}
 
-	private Item obterDadosItem(Produto produto, Fornecedor fornecedor) {
-		Item item = new Item();
-	    item.setProduto(produto);
-	    item.setFornecedor(fornecedor);
-	    item.setQuantidade(4);
-		item.setPreco(3.45);
+	private Pedido obterDadosPedido(Produto produto, Fornecedor fornecedor) {
+		Pedido pedido = new Pedido();
+		ProdutoPedido produtoPedido = new ProdutoPedido();
+		produtoPedido.setGtin(produto.getGtin());
+		produtoPedido.setNome(produto.getNome());
+		produtoPedido.setQuantidade(4);
+		produtoPedido.setPreco(new BigDecimal(3.45));
+		pedido.getProdutos().add(produtoPedido);
+		pedido.setFornecedor(fornecedor);
 
-		return item;
+		return pedido;
 	}
 
 	private Fornecedor obterDadosFornecedor() {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bluesoft.desafio.model.Pedido;
-import br.com.bluesoft.desafio.model.Produto;
+import br.com.bluesoft.desafio.model.ProdutoPedido;
 import br.com.bluesoft.desafio.services.PedidoService;
 
 
@@ -26,7 +26,7 @@ public class PedidoController {
 	private PedidoService pedidoService;
 
 	@PostMapping
-	public @ResponseBody List<Pedido> consome(@RequestBody List<Produto> produtos){
+	public @ResponseBody List<Pedido> consome(@RequestBody List<ProdutoPedido> produtos){
 
 
         //Cotacao c = cotacoes.stream().filter(x -> (x.getPrecos().stream().filter(y -> y.getQuantidade_minima() == 1).findFirst().get()).getQuantidade_minima() == 1).findFirst().get();

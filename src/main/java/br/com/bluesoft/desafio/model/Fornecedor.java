@@ -22,7 +22,7 @@ public class Fornecedor implements Serializable {
 	private Long id;
 	private String nome;
 	private String cnpj;
-	private List<Item> pedidos;
+	private List<Pedido> pedidos;
 
 	public Fornecedor() {
 	}
@@ -56,12 +56,12 @@ public class Fornecedor implements Serializable {
 		this.cnpj = cnpj;
 	}
 
-	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<Item> getPedidos() {
+	@OneToMany(mappedBy = "fornecedores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(List<Item> pedidos) {
+	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
 
