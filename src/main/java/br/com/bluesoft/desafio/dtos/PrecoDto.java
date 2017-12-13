@@ -1,9 +1,9 @@
-package br.com.bluesoft.desafio.model;
+package br.com.bluesoft.desafio.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Preco {
+public class PrecoDto {
 	private float preco;
 	private int quantidade_minima;
 	

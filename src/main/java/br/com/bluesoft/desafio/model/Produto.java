@@ -1,12 +1,16 @@
 package br.com.bluesoft.desafio.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "produto")
 public class Produto {
 
     @Id
+    @Column(name="gtin")
     private String gtin;
 
     private String nome;
