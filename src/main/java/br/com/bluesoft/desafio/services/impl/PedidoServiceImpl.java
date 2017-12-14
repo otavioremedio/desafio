@@ -23,6 +23,7 @@ import br.com.bluesoft.desafio.model.Fornecedor;
 import br.com.bluesoft.desafio.model.Item;
 import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.repository.FornecedorRepository;
+import br.com.bluesoft.desafio.repository.ItemRepository;
 import br.com.bluesoft.desafio.repository.PedidoRepository;
 import br.com.bluesoft.desafio.repository.ProdutoRepository;
 import br.com.bluesoft.desafio.services.PedidoService;
@@ -43,6 +44,9 @@ public class PedidoServiceImpl implements PedidoService {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private ItemRepository itemRepository;
 
 	@Override
 	public List<Pedido> criarPedidos(List<Item> itens) {
@@ -123,9 +127,25 @@ public class PedidoServiceImpl implements PedidoService {
 
 			pedido.setFornecedor(fornecedor);
 			pedidosCriados.add(this.pedidoRepository.save(pedido));
+
+			for (Pedido p : pedidosCriados) {
+				for (Item i : p.getItens()) {
+					i.getPedido().setId(p.getId());
+					this.itemRepository.save(i);
+				}
+			}
 		});
 
 		return pedidosCriados;
 	}
+
+	@Override
+	public List<Pedido> listarPedidos() {
+		List<Item> l = this.itemRepository.findAll();
+
+		return null;
+	}
+
+
 
 }

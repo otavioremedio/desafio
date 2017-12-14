@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ import br.com.bluesoft.desafio.services.PedidoService;
 
 
 @RestController
-@RequestMapping("/api/novo-pedido")
+
 public class PedidoController {
 
 	private static final Logger log = LoggerFactory.getLogger(PedidoController.class);
@@ -26,7 +27,9 @@ public class PedidoController {
 	private PedidoService pedidoService;
 
 	@PostMapping
-	public @ResponseBody List<Pedido> criarPedidos(@RequestBody List<Item> itens) throws Exception{
+	@ResponseBody
+	@RequestMapping("/api/novo-pedido")
+	public List<Pedido> criarPedidos(@RequestBody List<Item> itens) throws Exception{
 		List<Pedido> pedidos = this.pedidoService.criarPedidos(itens);
 
 		if(pedidos.size() == 0){
@@ -36,4 +39,10 @@ public class PedidoController {
 		return pedidos;
 	}
 
+	@GetMapping
+	@ResponseBody
+	@RequestMapping("/api/pedidos")
+	public List<Pedido> listarPedido(){
+		return this.pedidoService.listarPedidos();
+	}
 }

@@ -43,7 +43,7 @@ public class Pedido {
 	public Fornecedor getFornecedor() {
 		return fornecedor;
 	}
-	
+
 	public void setFornecedor(Fornecedor fornecedor) {
 		this.fornecedor = fornecedor;
 	}
@@ -51,7 +51,7 @@ public class Pedido {
 	public String toString() {
 		return "{id=" + id + ", itens=" + itens + ", fornecedor=" + fornecedor + "}";
 	}
-	
-	
+
+
 
 }
