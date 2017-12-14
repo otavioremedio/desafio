@@ -3,6 +3,7 @@ package br.com.bluesoft.desafio.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import br.com.bluesoft.desafio.model.Item;
 import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.model.Produto;
+import br.com.bluesoft.desafio.repository.FornecedorRepository;
+import br.com.bluesoft.desafio.repository.PedidoRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,14 +34,20 @@ public class PedidoServiceTest {
 	@MockBean
 	private PedidoService pedidoService;
 
+	@MockBean
+	private PedidoRepository pedidoRepository;
+
+	@MockBean
+	private FornecedorRepository fornecedorRepository;
+
 	List<Item> itens = new ArrayList<Item>();
-	Item item1 = new Item();
-	Item item2 = new Item();
-	Produto p1 = new Produto();
-	Produto p2 = new Produto();
 
 	@Before
 	public void setUp() throws Exception{
+		Item item1 = new Item();
+		Item item2 = new Item();
+		Produto p1 = new Produto();
+		Produto p2 = new Produto();
 		p1.setGtin("7891991010856");
 		p2.setGtin("7891000100103");
 		item1.setProduto(p1);
@@ -48,6 +57,12 @@ public class PedidoServiceTest {
 
 		itens.add(item1);
 		itens.add(item2);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		this.pedidoRepository.deleteAll();
+		this.fornecedorRepository.deleteAll();
 	}
 
 	@Test
