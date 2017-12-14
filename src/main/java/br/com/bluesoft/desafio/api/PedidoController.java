@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.model.Item;
+import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.services.PedidoService;
 
 
@@ -26,8 +26,13 @@ public class PedidoController {
 	private PedidoService pedidoService;
 
 	@PostMapping
-	public @ResponseBody List<Pedido> criarPedidos(@RequestBody List<Item> itens){
+	public @ResponseBody List<Pedido> criarPedidos(@RequestBody List<Item> itens) throws Exception{
 		List<Pedido> pedidos = this.pedidoService.criarPedidos(itens);
+
+		if(pedidos.size() == 0){
+			throw new Exception("Nenhum fornecedor atende essa quantidade. Por favor tente novamente.");
+		}
+
 		return pedidos;
 	}
 

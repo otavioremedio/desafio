@@ -3,6 +3,7 @@ package br.com.bluesoft.desafio.repository;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -15,14 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.bluesoft.desafio.model.Fornecedor;
+import br.com.bluesoft.desafio.model.Item;
 import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.model.Produto;
-import br.com.bluesoft.desafio.model.Item;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class ProdutoPedidoRepositoryTest {
+public class PedidoRepositoryTest {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
@@ -42,9 +43,8 @@ public class ProdutoPedidoRepositoryTest {
 
 	@After
 	public void tearDown() throws Exception {
-		this.fornecedorRepository.deleteAll();
-		this.produtoRepository.deleteAll();
 		this.pedidoRepository.deleteAll();
+		this.fornecedorRepository.deleteAll();
 	}
 
 	@Test
@@ -52,22 +52,16 @@ public class ProdutoPedidoRepositoryTest {
 		List<Pedido> pedidos = this.pedidoRepository.findAll();
 		assertEquals(1, pedidos.size());
 	}
-//
-//	@Test
-//	public void testBuscarLancamentosPorFuncionarioIdPaginado() {
-//		PageRequest page = new PageRequest(0, 10);
-//		Page<Lancamento> lancamentos = this.lancamentoRepository.findByFuncionarioId(funcionarioId, page);
-//
-//		assertEquals(2, lancamentos.getTotalElements());
-//	}
 
 	private Pedido obterDadosPedido(Produto produto, Fornecedor fornecedor) {
 		Pedido pedido = new Pedido();
 		Item item = new Item();
-		item.getProduto().setGtin(produto.getGtin());
+		List<Item> itensPedido = new ArrayList<Item>();
+		item.setProduto(produto);
 		item.setQuantidade(4);
 		item.setPreco(new BigDecimal(3.45));
-		pedido.getItens().add(item);
+		itensPedido.add(item);
+		pedido.setItens(itensPedido);
 		pedido.setFornecedor(fornecedor);
 
 		return pedido;

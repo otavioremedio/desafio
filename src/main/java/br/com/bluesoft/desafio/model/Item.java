@@ -21,7 +21,7 @@ public class Item {
     private Pedido pedido;
     private Produto produto;
     private BigDecimal total;
-    
+
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="produto_pedido_id")
@@ -51,7 +51,7 @@ public class Item {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-	
+
 	@Transient
 	public Produto getProduto() {
 		return produto;
@@ -59,19 +59,18 @@ public class Item {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-	
+
 	public BigDecimal getTotal() {
 		return new BigDecimal(this.quantidade * this.preco.doubleValue(), MathContext.DECIMAL64);
 	}
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "{id=" + id + ", quantidade=" + quantidade + ", preco=" + preco + ", pedido=" + pedido
 				+ ", produto=" + produto + ", total=" + total + "}";
 	}
-	
-	
+
 }

@@ -8,25 +8,20 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import org.hibernate.mapping.Array;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.datatype.jdk8.OptionalDoubleSerializer;
-
 import br.com.bluesoft.desafio.dtos.CotacaoDto;
 import br.com.bluesoft.desafio.dtos.PrecoDto;
 import br.com.bluesoft.desafio.model.Fornecedor;
-import br.com.bluesoft.desafio.model.Pedido;
-import br.com.bluesoft.desafio.model.Produto;
 import br.com.bluesoft.desafio.model.Item;
+import br.com.bluesoft.desafio.model.Pedido;
 import br.com.bluesoft.desafio.repository.FornecedorRepository;
 import br.com.bluesoft.desafio.repository.PedidoRepository;
 import br.com.bluesoft.desafio.repository.ProdutoRepository;
@@ -42,21 +37,21 @@ public class PedidoServiceImpl implements PedidoService {
 	//adicionar os repositorios necessarios
 	@Autowired
 	private PedidoRepository pedidoRepository;
-	
+
 	@Autowired
 	private FornecedorRepository fornecedorRepository;
-	
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
 	@Override
 	public List<Pedido> criarPedidos(List<Item> itens) {
-		
+
 		RestTemplate restTemplate = new RestTemplate();
 		List<CotacaoDto> cotacoes = null;
 		List<CotacaoDto> melhoresCotacoes = new ArrayList<CotacaoDto>();
 		List<Pedido> pedidosCriados = new ArrayList<Pedido>();
-		
+
 		itens = itens.stream().filter(x -> x.getQuantidade() > 0).collect(Collectors.toList());
 
 		for (Item item : itens) {
@@ -74,11 +69,11 @@ public class PedidoServiceImpl implements PedidoService {
 					cotacao.getPrecos().add(menorPreco.get());
 				} else {
 					cotacoes.remove(cotacao);
-					
+
 					if (cotacoes.size() == 0) {
 						break;
 					}
-				}												
+				}
 			}
 
 			//ordena do menor pro maior
@@ -91,7 +86,7 @@ public class PedidoServiceImpl implements PedidoService {
 				cotacoes.get(0).setGtin(item.getProduto().getGtin());
 				cotacoes.get(0).setQuantidade(item.getQuantidade());
 				melhoresCotacoes.add(cotacoes.get(0));
-			}				
+			}
 		}
 
 		//agrupa por cnpj
@@ -99,38 +94,38 @@ public class PedidoServiceImpl implements PedidoService {
 
 		//prepara os pedidos
 		cotacoesPorCnpj.forEach((k, v) -> {
-			ArrayList<CotacaoDto> lCotacoes = (ArrayList<CotacaoDto>) v;
-			List<Item> produtos = new ArrayList<Item>();
-			Pedido pedido = new Pedido();				
+			ArrayList<CotacaoDto> cotacoesPedido = (ArrayList<CotacaoDto>) v;
+			List<Item> itensPedido = new ArrayList<Item>();
+			Pedido pedido = new Pedido();
 			String cnpj = "";
 			String nmFornecedor = "";
 			Fornecedor fornecedor;
-			
-			for (CotacaoDto cotacaoDto : lCotacoes) {
-				Item item = new Item();				
+
+			for (CotacaoDto cotacaoDto : cotacoesPedido) {
+				Item item = new Item();
 				item.setProduto(this.produtoRepository.findByGtin(cotacaoDto.getGtin()));
 				item.setPreco(cotacaoDto.getPrecos().get(0).getPreco());
 				item.setQuantidade(cotacaoDto.getQuantidade());
-				produtos.add(item);
+				itensPedido.add(item);
 				cnpj = cotacaoDto.getCnpj();
 				nmFornecedor = cotacaoDto.getNome();
 			}
-			
-			pedido.setItens(produtos);
+
+			pedido.setItens(itensPedido);
 			fornecedor = this.fornecedorRepository.findByCnpj(cnpj);
-			
+
 			if (fornecedor == null) {
 				fornecedor = new Fornecedor();
 				fornecedor.setCnpj(cnpj);
 				fornecedor.setNome(nmFornecedor);
 				fornecedor = this.fornecedorRepository.save(fornecedor);
 			}
-			
-			pedido.setFornecedor(fornecedor);
-			pedidosCriados.add(this.pedidoRepository.save(pedido));					
-		});		
 
-		return pedidosCriados;		
+			pedido.setFornecedor(fornecedor);
+			pedidosCriados.add(this.pedidoRepository.save(pedido));
+		});
+
+		return pedidosCriados;
 	}
 
 }
