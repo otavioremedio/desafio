@@ -4,6 +4,8 @@ package br.com.bluesoft.desafio.repository;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +39,7 @@ public class PedidoRepositoryTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Fornecedor fornecedor = this.fornecedorRepository.save(obterDadosFornecedor());
-		Produto produto = this.produtoRepository.findByGtin("7894900011517");
-		this.pedidoRepository.save(obterDadosPedido(produto, fornecedor));
+		this.pedidoRepository.save(obterDadosPedido());
 	}
 
 	@After
@@ -54,16 +54,16 @@ public class PedidoRepositoryTest {
 		assertNotNull(pedidos);
 	}
 
-	private Pedido obterDadosPedido(Produto produto, Fornecedor fornecedor) {
+	private Pedido obterDadosPedido() {
 		Pedido pedido = new Pedido();
 		Item item = new Item();
 		List<Item> itensPedido = new ArrayList<Item>();
-		item.setProduto(produto);
+		item.setProduto(this.produtoRepository.findByGtin("7894900011517"));
 		item.setQuantidade(4);
-		item.setPreco(new BigDecimal(3.45));
+		item.setPreco(new BigDecimal(3.45, MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING));
 		itensPedido.add(item);
 		pedido.setItens(itensPedido);
-		pedido.setFornecedor(fornecedor);
+		pedido.setFornecedor(obterDadosFornecedor());
 
 		return pedido;
 	}

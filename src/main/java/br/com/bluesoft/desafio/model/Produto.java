@@ -1,19 +1,26 @@
 package br.com.bluesoft.desafio.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "produto")
 public class Produto {
 
-    @Id
+   
     private String gtin;
     private String nome;
-
-
-	public String getGtin() {
+   
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="gtin")
+    public String getGtin() {
         return gtin;
     }
 

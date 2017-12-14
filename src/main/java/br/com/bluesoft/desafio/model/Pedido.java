@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "pedido")
@@ -31,7 +33,7 @@ public class Pedido {
 		this.id = id;
 	}
 
-	@OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Item> getItens() {
 		return itens;
 	}
@@ -39,7 +41,7 @@ public class Pedido {
 		this.itens = itens;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public Fornecedor getFornecedor() {
 		return fornecedor;
 	}
@@ -47,6 +49,7 @@ public class Pedido {
 	public void setFornecedor(Fornecedor fornecedor) {
 		this.fornecedor = fornecedor;
 	}
+	
 	@Override
 	public String toString() {
 		return "{id=" + id + ", itens=" + itens + ", fornecedor=" + fornecedor + "}";

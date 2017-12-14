@@ -22,6 +22,7 @@ import br.com.bluesoft.desafio.dtos.PrecoDto;
 import br.com.bluesoft.desafio.model.Fornecedor;
 import br.com.bluesoft.desafio.model.Item;
 import br.com.bluesoft.desafio.model.Pedido;
+import br.com.bluesoft.desafio.model.Produto;
 import br.com.bluesoft.desafio.repository.FornecedorRepository;
 import br.com.bluesoft.desafio.repository.ItemRepository;
 import br.com.bluesoft.desafio.repository.PedidoRepository;
@@ -114,26 +115,18 @@ public class PedidoServiceImpl implements PedidoService {
 				cnpj = cotacaoDto.getCnpj();
 				nmFornecedor = cotacaoDto.getNome();
 			}
-
-			pedido.setItens(itensPedido);
+			
 			fornecedor = this.fornecedorRepository.findByCnpj(cnpj);
 
 			if (fornecedor == null) {
 				fornecedor = new Fornecedor();
 				fornecedor.setCnpj(cnpj);
 				fornecedor.setNome(nmFornecedor);
-				fornecedor = this.fornecedorRepository.save(fornecedor);
 			}
-
+			
+			pedido.setItens(itensPedido);
 			pedido.setFornecedor(fornecedor);
 			pedidosCriados.add(this.pedidoRepository.save(pedido));
-
-			for (Pedido p : pedidosCriados) {
-				for (Item i : p.getItens()) {
-					i.getPedido().setId(p.getId());
-					this.itemRepository.save(i);
-				}
-			}
 		});
 
 		return pedidosCriados;
@@ -141,9 +134,7 @@ public class PedidoServiceImpl implements PedidoService {
 
 	@Override
 	public List<Pedido> listarPedidos() {
-		List<Item> l = this.itemRepository.findAll();
-
-		return null;
+		return this.pedidoRepository.findAll();
 	}
 
 

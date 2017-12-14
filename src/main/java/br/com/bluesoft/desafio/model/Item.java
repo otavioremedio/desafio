@@ -11,7 +11,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.CascadeType;
+
 
 @Entity
 public class Item {
@@ -19,13 +25,12 @@ public class Item {
 	private long id;
 	private long quantidade;
     private BigDecimal preco;
-    private Pedido pedido;
     private Produto produto;
     private BigDecimal total;
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="produto_pedido_id")
+    @Column(name="item_id")
     public long getId() {
 		return id;
 	}
@@ -45,16 +50,14 @@ public class Item {
 		this.preco = preco;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "pedido_id",referencedColumnName="pedido_id")
-	public Pedido getPedido() {
-		return pedido;
+	public BigDecimal getTotal() {
+		return new BigDecimal(this.quantidade * this.preco.doubleValue(), MathContext.DECIMAL64);
 	}
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
-
-	@Transient
+	
+	@OneToOne(fetch = FetchType.EAGER)
 	public Produto getProduto() {
 		return produto;
 	}
@@ -62,17 +65,9 @@ public class Item {
 		this.produto = produto;
 	}
 
-	public BigDecimal getTotal() {
-		return new BigDecimal(this.quantidade * this.preco.doubleValue(), MathContext.DECIMAL64);
-	}
-	public void setTotal(BigDecimal total) {
-		this.total = total;
-	}
-
 	@Override
 	public String toString() {
-		return "{id=" + id + ", quantidade=" + quantidade + ", preco=" + preco + ", pedido=" + pedido
-				+ ", produto=" + produto + ", total=" + total + "}";
+		return "{id=" + id + ", quantidade=" + quantidade + ", preco=" + preco + ", produto=" + produto + ", total=" + total + "}";
 	}
 
 }
