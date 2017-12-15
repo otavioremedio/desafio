@@ -13,7 +13,7 @@ public interface PedidoService {
 	 * @param List<Item> itens
 	 * @return List<Pedido>
 	 */
-	List<Pedido> criarPedidos(List<Item> itens);
+	List<Pedido> criarPedidos(List<Item> itens) throws Exception;
 
 	/**
 	 * Retorna os pedidos criados.
@@ -21,6 +21,6 @@ public interface PedidoService {
 	 * @param
 	 * @return List<Pedido>
 	 */
-	List<Pedido> listarPedidos();
+	List<Pedido> listarPedidos() throws Exception;
 
 }

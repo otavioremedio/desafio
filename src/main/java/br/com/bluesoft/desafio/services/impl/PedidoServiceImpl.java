@@ -50,7 +50,7 @@ public class PedidoServiceImpl implements PedidoService {
 	private ItemRepository itemRepository;
 
 	@Override
-	public List<Pedido> criarPedidos(List<Item> itens) {
+	public List<Pedido> criarPedidos(List<Item> itens) throws Exception {
 
 		RestTemplate restTemplate = new RestTemplate();
 		List<CotacaoDto> cotacoes = null;
@@ -61,7 +61,9 @@ public class PedidoServiceImpl implements PedidoService {
 
 		for (Item item : itens) {
 			//consulta cotacao do produto
-			ResponseEntity<List<CotacaoDto>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + item.getProduto().getGtin()
+			Produto produto = this.produtoRepository.findByGtin(item.getProduto().getGtin());
+
+			ResponseEntity<List<CotacaoDto>> cotacoesResponse = restTemplate.exchange(props.getString("cotacao_path") + produto.getGtin()
                     , HttpMethod.GET, null, new ParameterizedTypeReference<List<CotacaoDto>>(){});
 
 			cotacoes = cotacoesResponse.getBody();
@@ -91,6 +93,8 @@ public class PedidoServiceImpl implements PedidoService {
 				cotacoes.get(0).setGtin(item.getProduto().getGtin());
 				cotacoes.get(0).setQuantidade(item.getQuantidade());
 				melhoresCotacoes.add(cotacoes.get(0));
+			} else {
+				throw new Exception("Nenhum fornecedor encontrado para a quantidade solicitada do produto " + produto.getNome());
 			}
 		}
 
@@ -115,7 +119,7 @@ public class PedidoServiceImpl implements PedidoService {
 				cnpj = cotacaoDto.getCnpj();
 				nmFornecedor = cotacaoDto.getNome();
 			}
-			
+
 			fornecedor = this.fornecedorRepository.findByCnpj(cnpj);
 
 			if (fornecedor == null) {
@@ -123,7 +127,7 @@ public class PedidoServiceImpl implements PedidoService {
 				fornecedor.setCnpj(cnpj);
 				fornecedor.setNome(nmFornecedor);
 			}
-			
+
 			pedido.setItens(itensPedido);
 			pedido.setFornecedor(fornecedor);
 			pedidosCriados.add(this.pedidoRepository.save(pedido));
@@ -133,8 +137,14 @@ public class PedidoServiceImpl implements PedidoService {
 	}
 
 	@Override
-	public List<Pedido> listarPedidos() {
-		return this.pedidoRepository.findAll();
+	public List<Pedido> listarPedidos() throws Exception {
+		List<Pedido> listaPedidos = new ArrayList<Pedido>();
+		listaPedidos = this.pedidoRepository.findAll();
+
+		if(listaPedidos.size() == 0)
+			throw new Exception("Não existem pedidos criados");
+
+		return listaPedidos;
 	}
 
 

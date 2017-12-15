@@ -29,20 +29,14 @@ public class PedidoController {
 	@PostMapping
 	@ResponseBody
 	@RequestMapping("/api/novo-pedido")
-	public List<Pedido> criarPedidos(@RequestBody List<Item> itens) throws Exception{
-		List<Pedido> pedidos = this.pedidoService.criarPedidos(itens);
-
-		if(pedidos.size() == 0){
-			throw new Exception("Nenhum fornecedor atende essa quantidade. Por favor tente novamente.");
-		}
-
-		return pedidos;
+	public List<Pedido> criarPedidos(@RequestBody List<Item> itens) throws Exception {
+		return this.pedidoService.criarPedidos(itens);
 	}
 
 	@GetMapping
 	@ResponseBody
 	@RequestMapping("/api/pedidos")
-	public List<Pedido> listarPedido(){
+	public List<Pedido> listarPedido() throws Exception{
 		return this.pedidoService.listarPedidos();
 	}
 }

@@ -66,7 +66,7 @@ public class PedidoServiceTest {
 	}
 
 	@Test
-	public void testCriarPedidos() {
+	public void testCriarPedidos() throws Exception {
 		List<Pedido> pedidosCriados = new ArrayList<Pedido>();
 		BDDMockito.given(this.pedidoService.criarPedidos(itens)).willReturn(pedidosCriados);
 	}
